@@ -24,36 +24,47 @@ const CertificatePreview = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 md:p-8">
+    <div className="flex flex-col items-center justify-center p-4 md:p-8 w-full">
       {/* Certificate Preview */}
       <div
         ref={certificateRef}
-        className="w-full max-w-[1123px] aspect-[1123/794] bg-no-repeat bg-cover bg-center p-6 md:p-16"
+        className="w-full max-w-[90vw] md:max-w-[1123px] aspect-[1123/794] bg-no-repeat bg-cover bg-center p-4 md:p-16 flex flex-col justify-between"
         style={{ backgroundImage: `url(${imagesData.certificate.src})` }}
       >
-        <div className="flex justify-between items-center mt-6 mx-4 md:mx-10">
-          <img className="w-24 md:w-[200px]" src={imagesData.accenture.src} alt={imagesData.accenture.name} />
-          <img className="w-12 md:w-[80px]" src={imagesData.magicbus.src} alt={imagesData.magicbus.name} />
+        {/* Logos */}
+        <div className="flex justify-between items-center mt-2 md:mt-6 mx-2 md:mx-10">
+          <img className="w-16 md:w-[200px]" src={imagesData.accenture.src} alt={imagesData.accenture.name} />
+          <img className="w-10 md:w-[80px]" src={imagesData.magicbus.src} alt={imagesData.magicbus.name} />
         </div>
-        <h1 className="text-2xl md:text-6xl text-center mt-4 md:mt-6">Certificate of Completion</h1>
-        <h3 className="px-2 md:px-4 py-1 md:py-2 mt-4 md:mt-8 border-b-2 border-black w-3/4 mx-auto text-center text-lg md:text-2xl">
+
+        {/* Certificate Title */}
+        <h1 className="text-xl md:text-5xl text-center font-bold mt-2 md:mt-6">Certificate of Completion</h1>
+
+        {/* Name Field */}
+        <h3 className="px-3 py-1 md:px-4 md:py-2 mt-4 md:mt-6 border-b-2 border-black w-4/5 mx-auto text-center text-lg md:text-2xl font-semibold">
           {certificate.name || "Your Name"}
         </h3>
-        <p className="text-sm md:text-xl text-center mt-4 md:mt-6">has successfully completed</p>
-        <p className="text-sm md:text-xl text-center mt-2 md:mt-4">
+
+        {/* Description */}
+        <p className="text-sm md:text-xl text-center mt-2 md:mt-4">has successfully completed</p>
+        <p className="text-sm md:text-xl text-center mt-1 md:mt-3">
           {`the ${certificate.course || "Course"} Programme in Magic Bus India Foundation at Medavakkam`}
         </p>
-        <div className="flex flex-col md:flex-row gap-2 justify-center items-center mt-3">
-          <p className="text-sm md:text-2xl">from</p>
-          <p className="px-2 md:px-4 py-1 md:py-2 border-b-2 border-black text-sm md:text-lg">{certificate.from}</p>
-          <p className="text-sm md:text-2xl">to</p>
-          <p className="px-2 md:px-4 py-1 md:py-2 border-b-2 border-black text-sm md:text-lg">{certificate.to}</p>
+
+        {/* Date Range */}
+        <div className="flex flex-wrap justify-center items-center gap-2 mt-2 md:mt-3">
+          <p className="text-xs md:text-xl">from</p>
+          <p className="px-3 py-1 border-b-2 border-black text-sm md:text-lg">{certificate.from || "Start Date"}</p>
+          <p className="text-xs md:text-xl">to</p>
+          <p className="px-3 py-1 border-b-2 border-black text-sm md:text-lg">{certificate.to || "End Date"}</p>
         </div>
-        <div className="mt-6 md:mt-8">
-          <img src={imagesData.sign.src} alt={imagesData.sign.name} className="mx-auto w-24 md:w-auto" />
-          <p className="text-xs md:text-base text-center mt-1">Jayant Rastogi</p>
-          <p className="text-xs md:text-base text-center mt-1">Global CEO</p>
-          <p className="text-xs md:text-base text-center mt-1">Magic Bus India Foundation</p>
+
+        {/* Signature */}
+        <div className="mt-6 md:mt-8 flex flex-col items-center">
+          <img src={imagesData.sign.src} alt={imagesData.sign.name} className="w-20 md:w-auto" />
+          <p className="text-xs md:text-base text-center">Jayant Rastogi</p>
+          <p className="text-xs md:text-base text-center">Global CEO</p>
+          <p className="text-xs md:text-base text-center">Magic Bus India Foundation</p>
         </div>
       </div>
 
