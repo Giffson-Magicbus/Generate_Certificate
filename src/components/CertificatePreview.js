@@ -13,9 +13,9 @@ const CertificatePreview = () => {
   // Function to Download PDF
   const handleDownloadPDF = () => {
     const input = certificateRef.current;
-    html2canvas(input, { scale: 2 }).then((canvas) => {
+    html2canvas(input, { scale: window.innerWidth < 768 ? 3 : 2 }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("landscape", "px", [1123, 794]); // A4 Landscape size
+      const pdf = new jsPDF("landscape", "px", [1123, 794]);
       pdf.addImage(imgData, "PNG", 0, 0, 1123, 794);
       pdf.save(`${certificate.name || "certificate"}.pdf`);
     });
@@ -23,43 +23,49 @@ const CertificatePreview = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-4 md:p-8">
-      {/* Scaled Certificate Container */}
-      <div className="w-full flex justify-center">
-        <div
-          ref={certificateRef}
-          className="relative origin-top-left scale-[0.5] md:scale-100 transform"
-          style={{ width: "1123px", height: "794px" }}
-        >
-          <div
-            className="w-full h-full bg-no-repeat bg-cover bg-center p-6 md:p-16"
-            style={{ backgroundImage: `url(${imagesData.certificate.src})` }}
-          >
-            <div className="flex justify-between items-center mt-6 mx-4 md:mx-10">
-              <img className="w-24 md:w-[200px]" src={imagesData.accenture.src} alt="Accenture" />
-              <img className="w-12 md:w-[80px]" src={imagesData.magicbus.src} alt="Magic Bus" />
-            </div>
-            <h1 className="text-2xl md:text-6xl text-center mt-4 md:mt-6">Certificate of Completion</h1>
-            <h3 className="px-2 md:px-4 py-1 md:py-2 mt-4 md:mt-8 border-b-2 border-black w-3/4 mx-auto text-center text-lg md:text-2xl">
-              {certificate.name || "Your Name"}
-            </h3>
-            <p className="text-sm md:text-xl text-center mt-4 md:mt-6">has successfully completed</p>
-            <p className="text-sm md:text-xl text-center mt-2 md:mt-4">
-              {`the ${certificate.course || "Course"} Programme in Magic Bus India Foundation at Medavakkam`}
-            </p>
-            <div className="flex flex-col md:flex-row gap-2 justify-center items-center mt-3">
-              <p className="text-sm md:text-2xl">from</p>
-              <p className="px-2 md:px-4 py-1 md:py-2 border-b-2 border-black text-sm md:text-lg">{certificate.from}</p>
-              <p className="text-sm md:text-2xl">to</p>
-              <p className="px-2 md:px-4 py-1 md:py-2 border-b-2 border-black text-sm md:text-lg">{certificate.to}</p>
-            </div>
-            <div className="mt-6 md:mt-8">
-              <img src={imagesData.sign.src} alt="Signature" className="mx-auto w-24 md:w-auto" />
-              <p className="text-xs md:text-base text-center mt-1">Jayant Rastogi</p>
-              <p className="text-xs md:text-base text-center mt-1">Global CEO</p>
-              <p className="text-xs md:text-base text-center mt-1">Magic Bus India Foundation</p>
-            </div>
-          </div>
-        </div>
+      {/* Responsive Iframe */}
+      <div className="w-full max-w-[1123px] aspect-[1123/794]">
+        <iframe
+          title="Certificate Preview"
+          srcDoc={`
+            <html>
+              <head>
+                <style>
+                  body { margin: 0; display: flex; align-items: center; justify-content: center; }
+                  .certificate-container {
+                    width: 100%;
+                    max-width: 1123px;
+                    aspect-ratio: 1123 / 794;
+                    background: url('${imagesData.certificate.src}') no-repeat center/cover;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 20px;
+                  }
+                  h1 { font-size: 40px; text-align: center; margin-bottom: 10px; }
+                  h3 { font-size: 24px; text-align: center; margin-bottom: 10px; }
+                  p { font-size: 18px; text-align: center; }
+                  .sign { margin-top: 20px; }
+                </style>
+              </head>
+              <body>
+                <div class="certificate-container">
+                  <h1>Certificate of Completion</h1>
+                  <h3>${certificate.name || "Your Name"}</h3>
+                  <p>has successfully completed</p>
+                  <p>the ${certificate.course || "Course"} Programme in Magic Bus India Foundation at Medavakkam</p>
+                  <p>from ${certificate.from || "Start Date"} to ${certificate.to || "End Date"}</p>
+                  <img class="sign" src="${imagesData.sign.src}" width="150" />
+                  <p>Jayant Rastogi</p>
+                  <p>Global CEO, Magic Bus India Foundation</p>
+                </div>
+              </body>
+            </html>
+          `}
+          className="w-full h-auto"
+          style={{ aspectRatio: "1123/794", border: "none" }}
+        />
       </div>
 
       {/* Buttons */}
